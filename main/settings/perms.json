@@ -1,11 +1,14 @@
 {
   "commandNames": ["bot"],
   
-  "commandPerms": {
+  "guildPerms": {
     "bot": {
       "id": "157433182331863040",
       "type": "USER",
       "permission": true
     }
+  },
+
+  "globalPerms": {
   }
 }
