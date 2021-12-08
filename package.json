@@ -1,0 +1,29 @@
+{
+  "name": "zen.musically",
+  "version": "1.0.0",
+  "description": "",
+  "main": "launcher.js",
+  "scripts": {
+    "zen": "node launcher.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NekroDarkmoon/Zen.Musically.git"
+  },
+  "keywords": [],
+  "author": "NekroDarkmoon",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/NekroDarkmoon/Zen.Musically/issues"
+  },
+  "homepage": "https://github.com/NekroDarkmoon/Zen.Musically#readme",
+  "dependencies": {
+    "@discordjs/builders": "^0.9.0",
+    "@discordjs/rest": "^0.1.0-canary.0",
+    "columnify": "^1.5.4",
+    "discord-api-types": "^0.25.2",
+    "discord.js": "^13.3.1",
+    "pm2": "^5.1.2",
+    "winston": "^3.3.3"
+  }
+}
