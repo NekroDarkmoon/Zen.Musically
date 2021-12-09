@@ -143,14 +143,14 @@ export default class CommandHandler {
 
 		const promises = commandFiles.map(async file => {
 			const cmdClass = (await import(`../commands/${file}`)).default;
-			const command = new cmdClass();
+			const command = new cmdClass(this.bot);
 			this.commands.set(command.name, command);
 		});
 
 		await Promise.all(promises);
 
 		this.globalCommands = this.commands.filter(cmd => cmd.global);
-		this.guildCommands = this.commands.filter(cmd => !cmd.global);
+		this.guildCommands = this.commands.filter(cmd => cmd.global);
 	}
 
 	/**
@@ -158,7 +158,7 @@ export default class CommandHandler {
 	 */
 	async registerCommands() {
 		try {
-			await this.registerGlobalCommands();
+			// await this.registerGlobalCommands();
 			await this.registerGuildCommands();
 		} catch (err) {
 			this.bot.logger.error(err);

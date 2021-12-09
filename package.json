@@ -6,6 +6,7 @@
   "scripts": {
     "zen": "node launcher.js"
   },
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/NekroDarkmoon/Zen.Musically.git"
@@ -19,6 +20,7 @@
   "homepage": "https://github.com/NekroDarkmoon/Zen.Musically#readme",
   "dependencies": {
     "@discordjs/builders": "^0.9.0",
+    "@discordjs/collection": "^0.3.2",
     "@discordjs/opus": "^0.7.0",
     "@discordjs/rest": "^0.1.0-canary.0",
     "@distube/soundcloud": "^1.0.0",

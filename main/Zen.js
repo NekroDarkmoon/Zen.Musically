@@ -142,9 +142,6 @@ export default class Zen extends Client {
 		this.destroy();
 		this.logger.warn('Client Disconnected');
 
-		// Close db connection
-		this.db.close();
-
 		// Close logger
 		this.logger.warn('Logger streams closed');
 		this.logger.close();
