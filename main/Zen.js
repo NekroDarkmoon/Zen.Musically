@@ -3,6 +3,10 @@
 // ----------------------------------------------------------------
 import { Client, GuildMember, Intents } from 'discord.js';
 
+import { DisTube } from 'distube';
+import { SpotifyPlugin } from '@distube/spotify';
+import { SoundCloudPlugin } from '@distube/soundcloud';
+
 import CommandHandler from './structures/CommandHandler.js';
 import EventHandler from './structures/EventHandler.js';
 import { caches } from './utils/utils.js';
@@ -38,6 +42,12 @@ export default class Zen extends Client {
 
 		/** @type {EventHandler} */
 		this.EventHandler = new EventHandler(this);
+
+		this.Distube = new DisTube(this, {
+			emitNewSongOnly: true,
+			nsfw: true,
+			plugins: [new SpotifyPlugin(), new SoundCloudPlugin()],
+		});
 
 		// Miscellaneous
 		/**@type {import('./structures/typedefs.js').ZenCache} */
