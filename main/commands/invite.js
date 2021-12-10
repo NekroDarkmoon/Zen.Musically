@@ -36,9 +36,17 @@ export default class Invite {
 	execute = async interaction => {
 		const member = interaction.user;
 		const link = this.bot.config.inviteLink;
+		const hasRole = await interaction.member.roles.resolveId(
+			'723052860165718066'
+		);
+		const isOwner = member.id === this.bot.application.owner.id;
 
 		try {
-			await member.send(link);
+			if (!hasRole && !isOwner)
+				return interaction.reply(
+					'Error: You need to be an Archivist or higher to use this command.'
+				);
+			await member.send(`${link}`);
 			return interaction.reply({ content: 'Sent an invite link to your DM.' });
 		} catch (e) {
 			this.bot.logger.error();
