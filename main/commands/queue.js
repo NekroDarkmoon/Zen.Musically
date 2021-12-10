@@ -197,12 +197,8 @@ export default class QueueCommand {
 	 */
 	async next(interaction, queue) {
 		try {
-			const e = new MessageEmbed()
-				.setTitle()
-				.setDescription()
-				.setColor('RANDOM');
-
-			return interaction.editReply({ embeds: [e] });
+			const song = await queue.skip();
+			return interaction.editReply(`Skipped [${song.name}](${song.url})`);
 		} catch (err) {
 			const e = new MessageEmbed()
 				.setTitle('Error')
@@ -222,12 +218,8 @@ export default class QueueCommand {
 	 */
 	async previous(interaction, queue) {
 		try {
-			const e = new MessageEmbed()
-				.setTitle()
-				.setDescription()
-				.setColor('RANDOM');
-
-			return interaction.editReply({ embeds: [e] });
+			const song = await queue.previous();
+			return interaction.editReply(`Skipped [${song.name}](${song.url})`);
 		} catch (err) {
 			const e = new MessageEmbed()
 				.setTitle('Error')
@@ -247,12 +239,20 @@ export default class QueueCommand {
 	 */
 	async to(interaction, queue) {
 		try {
-			const e = new MessageEmbed()
-				.setTitle()
-				.setDescription()
-				.setColor('RANDOM');
+			// Data Builder
+			const num = interaction.options.getInteger('target');
+			const currPos = queue.previousSongs.length + 1;
+			let track;
 
-			return interaction.editReply({ embeds: [e] });
+			if (num == currPos + 1)
+				return interaction.editReply('Cannot skip to current track.');
+
+			if (num > currPos) track = num - currPos;
+			else track = num - prevSongs;
+
+			await queue.jump(track);
+
+			return interaction.editReply(`Skipped to track #${num}(${track})`);
 		} catch (err) {
 			const e = new MessageEmbed()
 				.setTitle('Error')
@@ -262,65 +262,6 @@ export default class QueueCommand {
 
 			this.bot.logger.error(err);
 			return interaction.editReply({ embeds: [e] });
-		}
-	}
-
-	/**
-	 *
-	 * @param {CommandInteraction} interaction
-	 */
-	async queueHandler(interaction) {
-		const { channel, guild, member, options } = interaction;
-		const vChannel = member.voice.channel;
-
-		// Validation - Channel
-		if (!vChannel)
-			return interaction.editReply(
-				`Please join a voice channel to be able to use music commands.`
-			);
-
-		// Validation - Already In A Channel
-		if (guild.me.voice.channelId && vChannel.id !== guild.me.voice.channelId)
-			return interaction.editReply(
-				`Sorry. I'm already connected to <#${guild.me.voice.channelId}>.`
-			);
-
-		// Validation - Queue Exists
-		const queue = this.bot.Distube.getQueue(vChannel);
-		if (!queue) console.log(`Implement no queue.`);
-
-		try {
-			switch (options.getString('task')) {
-				case 'clear':
-					await queue.stop();
-					return interaction.editReply(`Cleared Queue.`);
-				case 'list':
-					const list = queue.songs.map(
-						(s, i) => `\n${i + 1}. ${s.name} - \`${s.formattedDuration}\``
-					);
-					const e = new MessageEmbed()
-						.setTitle('Current Queue')
-						.setDescription(`${list.slice(0, 1190)}`)
-						.setColor('RANDOM')
-						.setThumbnail(guild.me.avatarURL());
-					return interaction.editReply({ embeds: [e] });
-				case 'pause':
-					queue.pause();
-					return interaction.editReply('Paused Queue.');
-				case 'resume':
-					queue.resume();
-					return interaction.editReply('RESUMED Playing.');
-				case 'skip':
-					await queue.skip();
-					return interaction.editReply(`Skipped Song.`);
-			}
-		} catch (err) {
-			const e = new MessageEmbed()
-				.setTitle('Error')
-				.setColor('RED')
-				.setDescription(`An Error occured while trying to play the song.`);
-			interaction.editReply({ embeds: [e] });
-			this.bot.logger.error(err);
 		}
 	}
 }
