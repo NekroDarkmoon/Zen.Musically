@@ -78,7 +78,7 @@ export default class Play {
 				member: member,
 			});
 
-			return interaction.editReply(`Playing ${query}`);
+			return interaction.editReply(`Song Addded.`);
 		} catch (err) {
 			const e = new MessageEmbed()
 				.setTitle('Error')

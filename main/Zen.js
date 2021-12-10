@@ -44,9 +44,9 @@ export default class Zen extends Client {
 		this.EventHandler = new EventHandler(this);
 
 		this.Distube = new DisTube(this, {
-			emitNewSongOnly: true,
 			nsfw: true,
 			plugins: [new SpotifyPlugin(), new SoundCloudPlugin()],
+			youtubeCookie: this.config.ytCookie,
 		});
 
 		// Miscellaneous

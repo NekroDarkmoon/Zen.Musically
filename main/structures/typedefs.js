@@ -20,6 +20,7 @@
  * @property {boolean} deploySlash
  * @property {string} inviteLink
  * @property {string} version
+ * @property {string} ytCookie
  * @memberof typedefs
  */
 

@@ -34,9 +34,13 @@ export default class EventHandler {
 			if (!event.name) {
 			}
 
-			if (event.once)
-				this.bot.once(event.name, (...args) => event.execute(...args));
-			else this.bot.on(event.name, (...args) => event.execute(...args));
+			if (event?.distube) {
+				this.bot.Distube.on(event.name, (...args) => event.execute(...args));
+			} else {
+				if (event.once)
+					this.bot.once(event.name, (...args) => event.execute(...args));
+				else this.bot.on(event.name, (...args) => event.execute(...args));
+			}
 		});
 	}
 
