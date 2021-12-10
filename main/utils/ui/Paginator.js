@@ -143,7 +143,7 @@ export class TabulatedPages extends Pages {
 	 * @param {Object} config
 	 * @param {Numer} maxPages
 	 * @param {Number} maxLines
-	 * @param {Numebr} timeout
+	 * @param {Number} timeout
 	 */
 	constructor(
 		action,
@@ -185,7 +185,7 @@ export class TabulatedPages extends Pages {
 
 			// End if Stopped
 			if (type === 'stop') {
-				await this._collector.stop();
+				this._collector.stop();
 				return;
 			}
 
@@ -244,8 +244,84 @@ export class TabulatedPages extends Pages {
 }
 
 // ----------------------------------------------------------------
-//                             Imports
+//                         Audio Collection Paginator
 // ----------------------------------------------------------------
+export class AudioCollectionPages extends Pages {
+	/**
+	 *
+	 * @param {String} name
+	 * @param {Array} data
+	 * @param {MessageEmbed} embed
+	 * @param {Number} maxPages
+	 * @param {Number} maxLines
+	 * @param {Number} timeout
+	 */
+	constructor(
+		name,
+		data,
+		embed,
+		maxPages = null,
+		maxLines = 15,
+		timeout = 180
+	) {
+		maxPages = maxPages ? maxPages : Math.ceil(data.length / maxLines);
+		super(maxPages, timeout);
+		this.customId = name;
+		this.data = data;
+		this.embed = embed;
+		this.maxLines = maxLines;
+	}
+
+	createComponents(page) {
+		return super.createComponents(page);
+	}
+
+	/**
+	 *
+	 * @param {Interaction} interaction
+	 * @param {Number} maxClicks
+	 */
+	async onInteraction(interaction, maxClicks = 0) {
+		this._collector = await super.onInteraction(interaction, maxClicks);
+
+		this._collector.on('collect', async btnInt => {
+			// Data Builder
+			const pageNum = JSON.parse(btnInt.component.customId).page;
+			const type = JSON.parse(btnInt.component.customId).type;
+
+			// End if Stopped
+			if (type === 'stop') {
+				this._collector.stop();
+				return;
+			}
+
+			// Prep Data
+			const data = this._prepareData(pageNum);
+			// Update Embed
+			this.embed.setDescription(data);
+
+			// Update Components
+			this.components = this.createComponents(pageNum);
+			await btnInt.update({
+				components: this.components,
+				embeds: [this.embed],
+			});
+		});
+
+		this.onStop(interaction);
+	}
+
+	_prepareData(page) {
+		const data = this.data;
+		const display = data.slice(
+			(page - 1) * this.maxLines,
+			page * this.maxLines
+		);
+
+		const str = `\`\`\`css\n${display.join('\n')}\`\`\``;
+		return str;
+	}
+}
 
 // ----------------------------------------------------------------
 //                             Imports
