@@ -12,7 +12,7 @@ export default class OwnerCommands {
 	constructor() {
 		this.name = 'bot';
 		this.description = 'Bot Owner Commands';
-		this.global = true;
+		this.global = false;
 		this.data = new SlashCommandBuilder()
 			.setName(this.name)
 			.setDescription(this.description)
