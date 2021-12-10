@@ -39,7 +39,7 @@ export default class Resume {
 	 *
 	 * @param {CommandInteraction} interaction
 	 */
-	async play(interaction) {
+	async resume(interaction) {
 		const { channel, guild, member, options } = interaction;
 		const vChannel = member.voice.channel;
 

@@ -252,7 +252,9 @@ export default class QueueCommand {
 
 			await queue.jump(track);
 
-			return interaction.editReply(`Skipped to track #${num}(${track})`);
+			return interaction.editReply(
+				`Skipped to track #${num} (${track > 0 ? '+' : ''}${track})`
+			);
 		} catch (err) {
 			const e = new MessageEmbed()
 				.setTitle('Error')

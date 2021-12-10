@@ -8,19 +8,28 @@ import Zen from '../Zen.js';
 /**
  * @class
  */
-export default class Pause {
+export default class Loop {
 	/**
 	 *
 	 * @param {Zen} bot
 	 */
 	constructor(bot) {
-		this.name = 'pause';
-		this.description = 'Pauses the music player';
+		this.name = 'loop';
+		this.description = 'Loops a track or queue.';
 		this.global = true;
 		this.bot = bot;
 		this.data = new SlashCommandBuilder()
 			.setName(this.name)
-			.setDescription(this.description);
+			.setDescription(this.description)
+			.addIntegerOption(int =>
+				int
+					.setName('mode')
+					.setDescription('Type of loop.')
+					.setRequired(true)
+					.addChoice('Disabled', 0)
+					.addChoice('Song', 1)
+					.addChoice('Queue', 2)
+			);
 	}
 
 	/**
@@ -32,16 +41,17 @@ export default class Pause {
 		await interaction.deferReply();
 
 		// PLay music
-		this.pause(interaction);
+		this.loop(interaction);
 	};
 
 	/**
 	 *
 	 * @param {CommandInteraction} interaction
 	 */
-	async pause(interaction) {
+	async loop(interaction) {
 		const { channel, guild, member, options } = interaction;
 		const vChannel = member.voice.channel;
+		const mode = options.getInteger('mode');
 
 		// Validation - Channel
 		if (!vChannel)
@@ -59,8 +69,10 @@ export default class Pause {
 			return interaction.editReply(`There are no tracks in the queue.`);
 
 		try {
-			queue.pause();
-			return interaction.editReply(`Playing Paused.`);
+			const setMode = queue.setRepeatMode(mode);
+			const data = { 0: 'DISABLED', 1: 'SONG', 2: 'QUEUE' };
+
+			return interaction.editReply(`Repeat Mode set to \`${data[setMode]}\``);
 		} catch (err) {
 			const e = new MessageEmbed()
 				.setTitle('Error')
