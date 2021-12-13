@@ -197,7 +197,8 @@ export default class QueueCommand {
 	 */
 	async next(interaction, queue) {
 		try {
-			const song = await queue.skip();
+			const song = queue.songs[0];
+			await queue.skip();
 			return interaction.editReply(`Skipped [${song.name}](${song.url})`);
 		} catch (err) {
 			const e = new MessageEmbed()
@@ -218,7 +219,8 @@ export default class QueueCommand {
 	 */
 	async previous(interaction, queue) {
 		try {
-			const song = await queue.previous();
+			const song = queue.songs[0];
+			queue.previous();
 			return interaction.editReply(`Skipped [${song.name}](${song.url})`);
 		} catch (err) {
 			const e = new MessageEmbed()
