@@ -25,6 +25,7 @@
     "@discordjs/rest": "^0.1.0-canary.0",
     "@distube/soundcloud": "^1.0.0",
     "@distube/spotify": "^1.0.0",
+    "@distube/ytdl-core": "^4.11.1",
     "columnify": "^1.5.4",
     "discord-api-types": "^0.25.2",
     "discord.js": "^13.3.1",
