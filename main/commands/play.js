@@ -26,14 +26,6 @@ export default class Play {
 					.setName('song')
 					.setDescription('Title or link of song.')
 					.setRequired(true)
-			)
-			.addStringOption(str =>
-				str
-					.setName('source')
-					.setDescription('Optioanlly Select a source you wish to play from.')
-					.addChoice('Youtube', 'yt')
-					.addChoice('Spotify', 'sp')
-					.addChoice('SoundCloud', 'sc')
 			);
 	}
 
@@ -56,9 +48,6 @@ export default class Play {
 	async play(interaction) {
 		const { channel, guild, member, options } = interaction;
 		const vChannel = member.voice.channel;
-		const source = options.getString('source')
-			? options.getString('source')
-			: 'yt';
 		// Validation - Channel
 		if (!vChannel)
 			return interaction.editReply(
@@ -73,7 +62,7 @@ export default class Play {
 
 		try {
 			const query = options.getString('song');
-			this.bot.Distube.playVoiceChannel(vChannel, query, {
+			this.bot.Distube.play(vChannel, query, {
 				textChannel: channel,
 				member: member,
 			});
