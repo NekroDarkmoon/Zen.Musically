@@ -4,6 +4,7 @@
 import { Client, GuildMember, Intents } from 'discord.js';
 
 import { DisTube } from 'distube';
+import { YtDlpPlugin } from '@distube/yt-dlp';
 import { SpotifyPlugin } from '@distube/spotify';
 import { SoundCloudPlugin } from '@distube/soundcloud';
 
@@ -48,7 +49,7 @@ export default class Zen extends Client {
 			leaveOnFinish: true,
 			leaveOnStop: true,
 			nsfw: true,
-			plugins: [new SpotifyPlugin(), new SoundCloudPlugin()],
+			plugins: [new SpotifyPlugin(), new SoundCloudPlugin(), new YtDlpPlugin()],
 			youtubeCookie: this.config.ytCookie,
 			youtubeDL: false,
 		});
