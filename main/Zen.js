@@ -9,7 +9,6 @@ import { SoundCloudPlugin } from '@distube/soundcloud';
 
 import CommandHandler from './structures/CommandHandler.js';
 import EventHandler from './structures/EventHandler.js';
-import { caches } from './utils/utils.js';
 import winston from 'winston';
 
 // ----------------------------------------------------------------
@@ -44,9 +43,14 @@ export default class Zen extends Client {
 		this.EventHandler = new EventHandler(this);
 
 		this.Distube = new DisTube(this, {
+			searchSongs: 10,
+			leaveOnEmpty: true,
+			leaveOnFinish: true,
+			leaveOnStop: true,
 			nsfw: true,
 			plugins: [new SpotifyPlugin(), new SoundCloudPlugin()],
 			youtubeCookie: this.config.ytCookie,
+			youtubeDL: false,
 		});
 
 		// Miscellaneous
